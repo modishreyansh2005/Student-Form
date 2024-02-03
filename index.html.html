@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h2{margin-left : 570px;}
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body bgcolor="lightblue">
+
+  <h2>Student Form</h2>
+  
+  <form id="studentForm">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" required>
+    
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" required>
+
+    <label for="email">Email Id:</label>
+    <input type="email" id="email" required>
+
+    <label for="mobileNumber">Mobile Number:</label>
+    <input type="tel" id="mobileNumber" required>
+
+    <label for="gender">Gender:</label>
+    <select id="gender" required>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+
+    <label for="dob">Date Of Birth:</label>
+    <input type="date" id="dob" required>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" required>
+
+    <label for="city">City:</label>
+    <input type="text" id="city" required>
+
+    <label for="hobbies">Hobbies:</label>
+    <input type="text" id="hobbies" required>
+
+    <label for="file">File:</label>
+    <input type="file" id="file">
+
+    <label for="address">Address:</label>
+    <textarea id="address" required></textarea>
+
+    <button type="button" onclick="addStudent()">Add Student</button>
+  </form>
+
+  <h2>Student List</h2>
+  <table id="studentTable">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Mobile Number</th>
+        <th>Gender</th>
+        <th>Date Of Birth</th>
+        <th>Age</th>
+        <th>City</th>
+        <th>Hobbies</th>
+        <th>File</th>
+        <th>Address</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="studentList"></tbody>
+  </table>
+
+  <script>
+    let students = [];
+
+    function addStudent() {
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const mobileNumber = document.getElementById('mobileNumber').value;
+      const gender = document.getElementById('gender').value;
+      const dob = document.getElementById('dob').value;
+      const age = document.getElementById('age').value;
+      const city = document.getElementById('city').value;
+      const hobbies = document.getElementById('hobbies').value;
+      const file = document.getElementById('file').value;
+      const address = document.getElementById('address').value;
+
+      if (firstName && lastName && email && mobileNumber && gender && dob && age && city && hobbies && address) {
+        const student = { 
+          firstName, lastName, email, mobileNumber, gender, dob, age, city, hobbies, file, address 
+        };
+        students.push(student);
+        displayStudents();
+        clearForm();
+      } else {
+        alert("Please fill out all required fields.");
+      }
+    }
+
+    function displayStudents() {
+      const studentList = document.getElementById('studentList');
+      studentList.innerHTML = '';
+
+      students.forEach((student, index) => {
+        const row = `<tr>
+                      <td>${student.firstName}</td>
+                      <td>${student.lastName}</td>
+                      <td>${student.email}</td>
+                      <td>${student.mobileNumber}</td>
+                      <td>${student.gender}</td>
+                      <td>${student.dob}</td>
+                      <td>${student.age}</td>
+                      <td>${student.city}</td>
+                      <td>${student.hobbies}</td>
+                      <td>${student.file}</td>
+                      <td>${student.address}</td>
+                      <td><button onclick="editStudent(${index})">Edit</button>
+                          <button onclick="deleteStudent(${index})">Delete</button></td>
+                    </tr>`;
+        studentList.innerHTML += row;
+      });
+    }
+
+    function editStudent(index) {
+      const student = students[index];
+      document.getElementById('firstName').value = student.firstName;
+      document.getElementById('lastName').value = student.lastName;
+      document.getElementById('email').value = student.email;
+      document.getElementById('mobileNumber').value = student.mobileNumber;
+      document.getElementById('gender').value = student.gender;
+      document.getElementById('dob').value = student.dob;
+      document.getElementById('age').value = student.age;
+      document.getElementById('city').value = student.city;
+      document.getElementById('hobbies').value = student.hobbies;
+      document.getElementById('file').value = student.file;
+      document.getElementById('address').value = student.address;
+
+      students.splice(index, 1);
+      displayStudents();
+    }
+
+    function deleteStudent(index) {
+      students.splice(index, 1);
+      displayStudents();
+    }
+
+    function clearForm() {
+      document.getElementById('firstName').value = '';
+      document.getElementById('lastName').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('mobileNumber').value = '';
+      document.getElementById('gender').value = '';
+      document.getElementById('dob').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('city').value = '';
+      document.getElementById('hobbies').value = '';
+      document.getElementById('file').value = '';
+      document.getElementById('address').value = '';
+    }
+  </script>
+
+</body>
+</html>
